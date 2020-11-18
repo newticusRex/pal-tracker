@@ -1,5 +1,6 @@
 package io.pivotal.pal.tracker;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,12 +8,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+//@RequestMapping("/time-entries") ------- Use this, or add it to each method
 public class TimeEntryController {
 
     private TimeEntryRepository timeEntryRepository;
 
+    @Autowired
     public TimeEntryController(TimeEntryRepository timeEntryRepository) {
         this.timeEntryRepository = timeEntryRepository;
+    }
+
+    //If you add this no-arg constructor, you need to set @Autowired in the constructor above
+    public TimeEntryController(){
+
     }
 
     @PostMapping("/time-entries")
