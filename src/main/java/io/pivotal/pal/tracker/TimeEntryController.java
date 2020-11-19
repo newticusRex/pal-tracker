@@ -1,5 +1,9 @@
 package io.pivotal.pal.tracker;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.apache.catalina.DistributedManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +16,17 @@ import java.util.List;
 public class TimeEntryController {
 
     private TimeEntryRepository timeEntryRepository;
+    private final DistributionSummary timeEntrySummary;
+    private final Counter actionCounter;
 
-    @Autowired
-    public TimeEntryController(TimeEntryRepository timeEntryRepository) {
+    public TimeEntryController(TimeEntryRepository timeEntryRepository, MeterRegistry meterRegistry) {
         this.timeEntryRepository = timeEntryRepository;
+        this.timeEntrySummary = meterRegistry.summary("timeEntry.summary");
+        this.actionCounter = meterRegistry.counter("timeEntry.actionCounter");
     }
-
-    //If you add this no-arg constructor, you need to set @Autowired in the constructor above
-    public TimeEntryController(){
-
-    }
+    //   public TimeEntryController(){
+    //
+    //    }
 
     @PostMapping("/time-entries")
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate) {
