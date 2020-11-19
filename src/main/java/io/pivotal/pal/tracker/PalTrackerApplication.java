@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 public class PalTrackerApplication {
 
     private DataSource dataSource;
-    
+
     public static void main(String[] args){
         SpringApplication.run(PalTrackerApplication.class, args);
     }
